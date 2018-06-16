@@ -17,14 +17,14 @@ A library for print php files log By {- kimiyagar - BlackHat -}
 *******************************************************************************
 3) To change config of logger , go to Config.php file and change config like these :
 *******************************************************************************
-	define('_ENABLE_LOG'		, TRUE);
+	define('_ENABLE_LOG'        , TRUE);
 	define('_LOG_LEVEL'         , 'DEBUG');
 	define('_LOG_FILE_PATH'     , 'OutputLogFiles/');
 *******************************************************************************
 **help )
 *******************************************************************************
-_ENABLE_LOG : TRUE or FALSE
-_LOG_LEVEL : 'EMERGENCY' or 'ALERT' or 'CRITICAL' or 'ERROR' or 'WARNING' or 'NOTICE' or 'INFO' or 'DEBUG'
-_LOG_FILE_PATH : path of make log file
+_ENABLE_LOG : TRUE or FALSE;
+_LOG_LEVEL : 'EMERGENCY' or 'ALERT' or 'CRITICAL' or 'ERROR' or 'WARNING' or 'NOTICE' or 'INFO' or 'DEBUG';
+_LOG_FILE_PATH : path of make log file;
 *******************************************************************************
 		
