@@ -1,0 +1,8 @@
+[2018-06-16 14:05:09.744751] [EMERGENCY]  [index.php:3]   Emergency Message
+[2018-06-16 14:05:09.744920] [ALERT]      [index.php:4]   ALert Message
+[2018-06-16 14:05:09.744967] [CRITICAL]   [index.php:5]   Critical Message
+[2018-06-16 14:05:09.745008] [ERROR]      [index.php:6]   Error Message
+[2018-06-16 14:05:09.745049] [WARNING]    [index.php:7]   Warning Message
+[2018-06-16 14:05:09.745089] [NOTICE]     [index.php:8]   Notice Message
+[2018-06-16 14:05:09.745126] [INFO]       [index.php:9]   Info Message
+[2018-06-16 14:05:09.745167] [DEBUG]      [index.php:10]   Debug Message
