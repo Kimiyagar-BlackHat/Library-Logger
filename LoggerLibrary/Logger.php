@@ -9,7 +9,7 @@
             'DateFormat'     => 'Y-m-d G:i:s.u',
             'FileName'       => false,
             'FlushFrequency' => false,
-            'Prefix'         => 'Logeer_',
+            'Prefix'         => 'Logger_',
             'LogFormat'      => false,
             'AppendContext'  => true,
         );
