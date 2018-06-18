@@ -1,11 +1,11 @@
 <?php
-	include_once "LoggerController.php";
-    _Log(EMERGENCY , __FILE__ , __LINE__ , 'Emergency Message');
-    _Log(ALERT     , __FILE__ , __LINE__ , 'ALert Message');
-    _Log(CRITICAL  , __FILE__ , __LINE__ , 'Critical Message');
-    _Log(ERROR     , __FILE__ , __LINE__ , 'Error Message');
-    _Log(WARNING   , __FILE__ , __LINE__ , 'Warning Message');
-    _Log(NOTICE    , __FILE__ , __LINE__ , 'Notice Message');
-    _Log(INFO      , __FILE__ , __LINE__ , 'Info Message');
-    _Log(DEBUG     , __FILE__ , __LINE__ , 'Debug Message');
+	include_once "Logger/Logger.php";
+    _Log('Debug'     , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Info'      , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Notice'    , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Warning'   , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Error'     , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Critical'  , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Alert'     , __FILE__ , __LINE__ , 'Your Log Message');
+    _Log('Emergency' , __FILE__ , __LINE__ , 'Your Log Message');
 ?>

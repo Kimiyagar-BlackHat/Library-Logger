@@ -1,36 +1,45 @@
 <?php
-    require "AbstractLogger.php";
-    require "LogLevel.php";
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
+    require "Abstract.php";
+//------------------------------------------------------------------------------------------------
     class LOGGER extends ABSTRACT_LOGGER
     {
+//------------------------------------------------------------------------------------------------
+        const EMERGENCY = 'EMERGENCY';
+        const ALERT     = 'ALERT';
+        const CRITICAL  = 'CRITICAL';
+        const ERROR     = 'ERROR';
+        const WARNING   = 'WARNING';
+        const NOTICE    = 'NOTICE';
+        const INFO      = 'INFO';
+        const DEBUG     = 'DEBUG';
         protected $Options = array (
-            'Extension'      => 'log',
-            'DateFormat'     => 'Y-m-d G:i:s.u',
-            'FileName'       => false,
-            'FlushFrequency' => false,
-            'Prefix'         => 'Logger_',
-            'LogFormat'      => false,
-            'AppendContext'  => true,
-        );
-        private $LogFilePath;
-        protected $LogLevelThreshold = LOG_LEVEL::DEBUG;
-        private $LogLineCount = 0;
-        protected $LogLevels = array(
-                                        LOG_LEVEL::EMERGENCY => 0,
-                                        LOG_LEVEL::ALERT     => 1,
-                                        LOG_LEVEL::CRITICAL  => 2,
-                                        LOG_LEVEL::ERROR     => 3,
-                                        LOG_LEVEL::WARNING   => 4,
-                                        LOG_LEVEL::NOTICE    => 5,
-                                        LOG_LEVEL::INFO      => 6,
-                                        LOG_LEVEL::DEBUG     => 7
+                                        'Extension'      => 'log',
+                                        'DateFormat'     => 'Y-m-d G:i:s.u',
+                                        'FileName'       => false,
+                                        'FlushFrequency' => false,
+                                        'Prefix'         => 'Logger_',
+                                        'LogFormat'      => false,
+                                        'AppendContext'  => true,
                                     );
+        protected $LogLevels = array(
+                                        self::EMERGENCY => 0,
+                                        self::ALERT     => 1,
+                                        self::CRITICAL  => 2,
+                                        self::ERROR     => 3,
+                                        self::WARNING   => 4,
+                                        self::NOTICE    => 5,
+                                        self::INFO      => 6,
+                                        self::DEBUG     => 7
+                                    );
+        protected $LogLevelThreshold = self::DEBUG;
+        private $LogFilePath;
+        private $LogLineCount = 0;        
         private $FileHandle;
         private $LastLine = '';
         private $DefaultPermissions = 0777;
-    //-----------------------------------------------------------------------------------------------
-        public function __construct($LogDirectory, $LogLevelThreshold = LOG_LEVEL::DEBUG, array $Options = array())
+//------------------------------------------------------------------------------------------------
+        public function __construct($LogDirectory, $LogLevelThreshold = self::DEBUG, array $Options = array())
         {
             $this->LogLevelThreshold = $LogLevelThreshold;
             $this->Options = array_merge($this->Options, $Options);
@@ -58,12 +67,12 @@
                 throw new RuntimeException('The File Could Not Be Opened. Check Permissions.');
             }
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function _LogToStdOut($StdOutPath) 
         {
             $this->LogFilePath = $StdOutPath;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function _LogFilePath($LogDirectory) 
         {
             if ($this->Options['FileName']) 
@@ -82,12 +91,12 @@
                 $this->LogFilePath = $LogDirectory.DIRECTORY_SEPARATOR.$this->Options['Prefix'].date('Y-m-d').'.'.$this->Options['Extension'];
             }
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function SetFileHandle($WriteMode) 
         {
             $this->FileHandle = fopen($this->LogFilePath, $WriteMode);
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function __destruct()
         {
             if ($this->FileHandle) 
@@ -95,17 +104,17 @@
                 fclose($this->FileHandle);
             }
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function SetDateFormat($DateFormat)
         {
             $this->Options['DateFormat'] = $DateFormat;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function _LogLevelThreshold($LogLevelThreshold)
         {
             $this->LogLevelThreshold = $LogLevelThreshold;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function Log($Level, $Message, array $Context = array())
         {
             if ($this->LogLevels[$this->LogLevelThreshold] < $this->LogLevels[$Level]) 
@@ -115,7 +124,7 @@
             $Message = $this->FormatMessage($Level, $Message, $Context);
             $this->Write($Message);
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function Write($Message)
         {
             if (null !== $this->FileHandle) 
@@ -135,17 +144,17 @@
                 }
             }
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function GetLogFilePath()
         {
             return $this->LogFilePath;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         public function LetLastLogLine()
         {
             return $this->LastLine;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         protected function FormatMessage($Level, $Message, $Context)
         {
             if ($this->Options['LogFormat']) 
@@ -174,7 +183,7 @@
             }
             return $Message.PHP_EOL;
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         private function GetTimestamp()
         {
             date_default_timezone_set("Asia/Tehran");
@@ -183,7 +192,7 @@
             $Date = new DateTime(date('Y-m-d H:i:s.'.$Micro, $OriginalTime));
             return $Date->Format($this->Options['DateFormat']);
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         protected function ContextToString($Context)
         {
             $Export = '';
@@ -191,31 +200,20 @@
             {
                 $Export .= "{$Key}: ";
                 $Export .= preg_replace(
-                                        array(
-                                                '/=>\s+([a-zA-Z])/im',
-                                                '/array\(\s+\)/im',
-                                                '/^  |\G  /m'
-                                            ), 
-                                        array(
-                                                '=> $1',
-                                                'array()',
-                                                '    '
-                                            ),
-                                        str_replace(
-                                                    'array (',
-                                                    'array(',
-                                                    var_Export($Value, true)
-                                                    )
+                                            array('/=>\s+([a-zA-Z])/im','/array\(\s+\)/im','/^  |\G  /m'), 
+                                            array('=> $1','array()','    '),
+                                            str_replace('array (','array(',var_Export($Value, true))
                                         );
                 $Export .= PHP_EOL;
             }
             return str_replace(array('\\\\', '\\\''), array('\\', '\''), rtrim($Export));
         }
-    //-----------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------
         protected function Indent($String, $Indent = '    ')
         {
-            return $Indent.str_replace("\n", "\n".$Indent, $String);
+            return $Indent . str_replace("\n", "\n".$Indent, $String);
         }
-    //----------------------------------------------------------------------------------------------- 
+//------------------------------------------------------------------------------------------------ 
     }
+//------------------------------------------------------------------------------------------------
 ?>
